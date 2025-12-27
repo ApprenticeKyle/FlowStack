@@ -1,36 +1,28 @@
 package org.r2learning.project.service;
 
+import java.util.List;
 import java.util.Map;
+import org.r2learning.project.client.TaskFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 @Service
 public class TaskServiceClient {
 
     @Autowired
-    private WebClient.Builder webClientBuilder;
+    private TaskFeignClient taskFeignClient;
 
-    public Mono<Map<String, Object>> getTasksByProjectId(Long projectId) {
-        return webClientBuilder
-                .build()
-                .get()
-                .uri("lb://task-service/tasks?projectId=" + projectId)
-                .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
-                });
+    public Mono<List<Map<String, Object>>> getTasksByProjectId(Long projectId) {
+        // Feign is blocking, so we wrap it in Mono.fromCallable and subscribe on a
+        // bounded elastic scheduler
+        return Mono.fromCallable(() -> taskFeignClient.getTasksByProjectId(projectId))
+                .subscribeOn(Schedulers.boundedElastic());
     }
 
     public Mono<Map<String, Object>> createTaskForProject(Long projectId, Map<String, Object> taskData) {
-        return webClientBuilder
-                .build()
-                .post()
-                .uri("lb://task-service/tasks")
-                .bodyValue(taskData)
-                .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
-                });
+        return Mono.fromCallable(() -> taskFeignClient.createTask(taskData))
+                .subscribeOn(Schedulers.boundedElastic());
     }
 }
