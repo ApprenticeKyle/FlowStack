@@ -6,8 +6,8 @@ spring:
   main:
     web-application-type: reactive
 
-  config:
-    import: "optional:nacos:"
+
+
 
 
   # Redis 配置

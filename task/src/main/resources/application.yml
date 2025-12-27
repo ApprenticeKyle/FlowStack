@@ -1,7 +1,4 @@
 spring:
-  config:
-    import: "optional:nacos:"
-
 
   datasource:
     url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/taskflow_task?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai

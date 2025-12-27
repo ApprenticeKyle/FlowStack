@@ -2,7 +2,7 @@ spring:
   application:
     name: api-gateway
   profiles:
-    active: @activatedProperties@  # Maven 属性替换
+    active: dev  # Maven 属性替换
   cloud:
     nacos:
       discovery:
