@@ -1,7 +1,7 @@
 [English](#english) | [中文](#chinese)
 
 <a name="chinese"></a>
-# TaskFlow 微服务架构说明
+# FlowStack 微服务架构说明
 
 ## 一、整体架构
 
@@ -294,7 +294,7 @@ curl http://localhost:8082/projects
 ---
 
 <a name="english"></a>
-# TaskFlow Microservices Architecture
+# FlowStack Microservices Architecture
 
 ## 1. Overall Architecture
 

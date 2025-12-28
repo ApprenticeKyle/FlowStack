@@ -12,7 +12,7 @@ services:
       - "8848:8848"
       - "9848:9848"
     networks:
-      - taskflow_net
+      - flowstack_net
 
   mysql:
     image: mysql:8.0
@@ -26,7 +26,7 @@ services:
       - "3306:3306"
     command: --default-authentication-plugin=mysql_native_password
     networks:
-      - taskflow_net
+      - flowstack_net
 
   redis:
     image: redis:7.0-alpine
@@ -34,7 +34,7 @@ services:
     ports:
       - "6379:6379"
     networks:
-      - taskflow_net
+      - flowstack_net
 
   gateway:
     build: ./gateway
@@ -47,7 +47,7 @@ services:
     depends_on:
       - nacos
     networks:
-      - taskflow_net
+      - flowstack_net
 
   auth:
     build: ./auth
@@ -65,7 +65,7 @@ services:
       - mysql
       - redis
     networks:
-      - taskflow_net
+      - flowstack_net
 
   project:
     build: ./project
@@ -83,7 +83,7 @@ services:
       - mysql
       - redis
     networks:
-      - taskflow_net
+      - flowstack_net
 
   task:
     build: ./task
@@ -101,7 +101,7 @@ services:
       - mysql
       - redis
     networks:
-      - taskflow_net
+      - flowstack_net
 
   file:
     build: ./file
@@ -119,7 +119,7 @@ services:
       - mysql
       - redis
     networks:
-      - taskflow_net
+      - flowstack_net
 
   search:
     build: ./search
@@ -137,7 +137,7 @@ services:
       - mysql
       - redis
     networks:
-      - taskflow_net
+      - flowstack_net
 
   analytics:
     build: ./analytics
@@ -155,7 +155,7 @@ services:
       - mysql
       - redis
     networks:
-      - taskflow_net
+      - flowstack_net
 
   notification:
     build: ./notification
@@ -173,10 +173,10 @@ services:
       - mysql
       - redis
     networks:
-      - taskflow_net
+      - flowstack_net
 
 networks:
-  taskflow_net:
+  flowstack_net:
     driver: bridge
 
 volumes:
