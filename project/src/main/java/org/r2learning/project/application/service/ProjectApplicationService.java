@@ -1,8 +1,12 @@
 package org.r2learning.project.application.service;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-
 import org.r2learning.project.application.cmd.CreateProjectCmd;
+import org.r2learning.project.application.cmd.UpdateProjectCmd;
+import org.r2learning.project.application.mapper.ProjectMapper;
 import org.r2learning.project.client.TaskFeignClient;
 import org.r2learning.project.domain.project.Project;
 import org.r2learning.project.domain.project.gateway.ProjectGateway;
@@ -12,10 +16,6 @@ import org.r2learning.project.interfaces.web.dto.TaskRemoteDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 public class ProjectApplicationService {
@@ -24,23 +24,15 @@ public class ProjectApplicationService {
     private final TaskFeignClient taskFeignClient;
 
     @Transactional
-    public Long createProject(CreateProjectCmd cmd) {
+    public Long create(CreateProjectCmd cmd) {
         Project project = Project.create(cmd.getName(), cmd.getDescription(), cmd.getOwnerId());
         return projectGateway.save(project).getId();
     }
 
-    public List<ProjectDTO> get() {
+    public List<ProjectDTO> list() {
         Collection<Project> projects = projectGateway.findAll();
-        return projects.stream().map(project -> ProjectDTO.builder()
-                .id(project.getId())
-                .name(project.getName())
-                .description(project.getDescription())
-                .ownerId(project.getOwnerId())
-                .status(project.getStatus())
-                .deadline(project.getDeadline())
-                .members(project.getMembers())
-                .progress(project.getProgress())
-                .build())
+        return projects.stream()
+            .map(ProjectMapper.INSTANCE::toDTO)
             .collect(Collectors.toList());
     }
 
@@ -54,13 +46,9 @@ public class ProjectApplicationService {
         // RPC call to Task Module using structured DTO
         List<TaskRemoteDTO> tasks = taskFeignClient.getTasksByProjectId(projectId);
 
-        return ProjectDTO.builder()
-            .id(project.getId())
-            .name(project.getName())
-            .description(project.getDescription())
-            .ownerId(project.getOwnerId())
-            .tasks(tasks)
-            .build();
+        ProjectDTO projectDTO = ProjectMapper.INSTANCE.toDTO(project);
+        projectDTO.setTasks(tasks);
+        return projectDTO;
     }
 
     @Transactional(readOnly = true)
@@ -80,5 +68,14 @@ public class ProjectApplicationService {
             .highPriorityTasks(highPriority)
             .teamVelocity("94%") // Mocked for now, can be calculated later
             .build();
+    }
+
+    public Long update(UpdateProjectCmd cmd) {
+        Project project = projectGateway.findById(cmd.getId());
+        if (project == null) {
+            throw new IllegalArgumentException("Project not found");
+        }
+        project.update(cmd.getName(), cmd.getDescription());
+        return projectGateway.save(project).getId();
     }
 }

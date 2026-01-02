@@ -6,7 +6,7 @@ import org.r2learning.task.domain.task.Task;
 import org.r2learning.task.infrastructure.db.dataobject.TaskDO;
 import org.r2learning.task.interfaces.web.dto.TaskDTO;
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface TaskMapper {
 
     TaskMapper INSTANCE = Mappers.getMapper(TaskMapper.class);

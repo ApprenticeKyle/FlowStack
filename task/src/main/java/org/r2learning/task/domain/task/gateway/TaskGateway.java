@@ -1,5 +1,6 @@
 package org.r2learning.task.domain.task.gateway;
 
+import java.util.List;
 import org.r2learning.task.domain.task.Task;
 
 /**
@@ -11,7 +12,7 @@ public interface TaskGateway {
 
     Task findById(Long id);
 
-    java.util.List<Task> findByProjectId(Long projectId);
+    List<Task> findByProjectId(Long projectId);
 
     void delete(Long id);
 }

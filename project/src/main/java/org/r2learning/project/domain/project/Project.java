@@ -1,9 +1,8 @@
 package org.r2learning.project.domain.project;
 
-import lombok.Getter;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import lombok.Getter;
 
 /**
  * Project Aggregate Root
@@ -21,8 +20,10 @@ public class Project {
     private Integer members;
     private Integer progress;
 
-    public Project(Long id, String name, String description, Long ownerId, String status, LocalDate deadline,
-            Integer members, Integer progress, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Project(Long id, String name, String description, Long ownerId, String status,
+                   LocalDate deadline,
+                   Integer members, Integer progress, LocalDateTime createdAt,
+                   LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -39,7 +40,18 @@ public class Project {
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Project name cannot be empty");
         }
-        return new Project(null, name, description, ownerId, "planning", null, 0, 0, LocalDateTime.now(),
-                LocalDateTime.now());
+        return new Project(null, name, description, ownerId, "planning", null, 0, 0,
+            LocalDateTime.now(),
+            LocalDateTime.now());
+    }
+
+    public void update(String name, String description) {
+        if (name != null && !name.trim().isEmpty()) {
+            this.name = name;
+        }
+        if (description != null) {
+            this.description = description;
+        }
+        this.updatedAt = LocalDateTime.now();
     }
 }

@@ -1,16 +1,16 @@
-package org.r2learning.project.infrastructure.db.mapper;
+package org.r2learning.project.application.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import org.r2learning.project.domain.project.Project;
-import org.r2learning.project.infrastructure.db.dataobject.ProjectDO;
+import org.r2learning.project.interfaces.web.dto.ProjectDTO;
 
 @Mapper
 public interface ProjectMapper {
-
+    
     ProjectMapper INSTANCE = Mappers.getMapper(ProjectMapper.class);
 
-    ProjectDO toDO(Project project);
-
-    Project toEntity(ProjectDO projectDO);
+    ProjectDTO toDTO(Project project);
+    
+    Project toDomain(ProjectDTO dto);
 }

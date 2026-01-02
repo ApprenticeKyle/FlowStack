@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.r2learning.common.utils.UserContextHolder;
 import org.r2learning.project.application.cmd.CreateProjectCmd;
+import org.r2learning.project.application.cmd.UpdateProjectCmd;
 import org.r2learning.project.application.service.ProjectApplicationService;
 import org.r2learning.project.interfaces.web.dto.ProjectDTO;
 import org.r2learning.project.interfaces.web.dto.ProjectStatsDTO;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,19 +25,28 @@ public class ProjectController {
     private final ProjectApplicationService projectApplicationService;
 
     @GetMapping
-    public ResponseEntity<List<ProjectDTO>> get() {
-        return ResponseEntity.ok(projectApplicationService.get());
+    public ResponseEntity<List<ProjectDTO>> list() {
+        return ResponseEntity.ok(projectApplicationService.list());
     }
 
     @PostMapping
-    public ResponseEntity<Long> createProject(@RequestBody CreateProjectCmd cmd) {
+    public ResponseEntity<Long> create(@RequestBody CreateProjectCmd cmd) {
         Long ownerId = UserContextHolder.getCurrentUserId();
         cmd.setOwnerId(ownerId);
-        Long projectId = projectApplicationService.createProject(cmd);
+        Long projectId = projectApplicationService.create(cmd);
         return ResponseEntity.ok(projectId);
     }
 
-    @GetMapping("/{id}/details")
+    @PutMapping("/{id}")
+    public ResponseEntity<Long> update(@PathVariable Long id, @RequestBody UpdateProjectCmd cmd) {
+        cmd.setId(id);
+        Long ownerId = UserContextHolder.getCurrentUserId();
+        cmd.setOwnerId(ownerId);
+        Long projectId = projectApplicationService.update(cmd);
+        return ResponseEntity.ok(projectId);
+    }
+
+    @GetMapping("/{id}")
     public ResponseEntity<ProjectDTO> getProjectDetails(@PathVariable Long id) {
         return ResponseEntity.ok(projectApplicationService.getProjectWithTasks(id));
     }
