@@ -1,14 +1,18 @@
 package org.r2learning.project.client;
 
+import org.r2learning.project.client.dto.TaskRemoteDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.r2learning.project.interfaces.web.dto.TaskRemoteDTO;
 
 import java.util.List;
 
+/**
+ * Task Service Feign客户端
+ * 用于调用task-service的接口，返回的是RemoteDTO
+ */
 @FeignClient(name = "task-service")
 public interface TaskFeignClient {
 

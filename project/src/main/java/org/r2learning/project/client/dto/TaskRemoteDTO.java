@@ -1,8 +1,12 @@
-package org.r2learning.project.interfaces.web.dto;
+package org.r2learning.project.client.dto;
 
 import lombok.Data;
 import java.time.LocalDateTime;
 
+/**
+ * 远程任务DTO（从task-service获取）
+ * 用于Feign客户端调用，不对外暴露
+ */
 @Data
 public class TaskRemoteDTO {
     private Long id;
@@ -17,3 +21,4 @@ public class TaskRemoteDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
+

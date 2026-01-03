@@ -1,7 +1,7 @@
 package org.r2learning.project.domain.project.gateway;
 
-import java.util.Collection;
-
+import java.util.List;
+import org.r2learning.project.application.cmd.ListProjectCmd;
 import org.r2learning.project.domain.project.Project;
 
 public interface ProjectGateway {
@@ -11,5 +11,5 @@ public interface ProjectGateway {
 
     void delete(Long id);
 
-    Collection<Project> findAll();
+    List<Project> findByCriteria(ListProjectCmd cmd);
 }

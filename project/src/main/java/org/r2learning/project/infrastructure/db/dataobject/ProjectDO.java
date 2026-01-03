@@ -21,6 +21,11 @@ public class ProjectDO {
     private LocalDateTime updatedAt;
     private String status;
     private LocalDate deadline;
+    private LocalDate startDate;
     private Integer members;
     private Integer progress;
+    private String priority;
+    private Boolean starred;
+    private Boolean archived;
+    private String coverImage;
 }

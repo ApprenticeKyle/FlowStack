@@ -26,6 +26,7 @@
         <module>search</module>
         <module>file</module>
         <module>common</module>
+        <module>user</module>
     </modules>
 
     <properties>
